@@ -32,7 +32,9 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${env.DOCKERFILE_PATH}")
+                    docker.withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
+                        def customImage = docker.build("${env.DOCKER_IMAGE}")
+                    }
                 }
             }
         }
