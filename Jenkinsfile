@@ -44,6 +44,11 @@ pipeline {
                     def appContainer = "spring-boot-app"
                     bat "docker rm -f ${postgresContainer} || true"
                     bat "docker rm -f ${appContainer} || true"
+
+                    bat """
+                    netstat -ano | findstr :8081 | for /f "tokens=5" %a in ('findstr :8081') do taskkill /F /PID %a
+                    """
+
                     bat 'docker-compose up -d'
                 }
             }
