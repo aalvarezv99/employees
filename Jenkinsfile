@@ -3,8 +3,9 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "spring-boot-app"
-        DOCKER_REGISTRY = env.DOCKER_REGISTRY
-        DOCKER_CREDENTIALS_ID = env.DOCKER_TOKEN
+        DOCKER_REGISTRY = "${env.DOCKER_REGISTRY}"
+        DOCKER_CREDENTIALS_ID = "${env.DOCKER_TOKEN}"
+        DOCKER_PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker"
     }
 
     stages {
@@ -16,39 +17,37 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'gradle build --no-daemon'
+                bat 'gradle build --no-daemon'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.withRegistry(DOCKER_REGISTRY, DOCKER_CREDENTIALS_ID) {
-                        docker.image(DOCKER_IMAGE).build()
-                    }
+                    bat "\"${DOCKER_PATH}\" build -t ${DOCKER_IMAGE} ."
                 }
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'gradle test'
+                bat 'gradle test'
             }
         }
 
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry(DOCKER_REGISTRY, DOCKER_CREDENTIALS_ID) {
-                        docker.image(DOCKER_IMAGE).push('latest')
-                    }
+                    bat "\"${DOCKER_PATH}\" login -u ${env.DOCKER_USER} -p ${env.DOCKER_PASSWORD}"
+                    bat "\"${DOCKER_PATH}\" tag ${DOCKER_IMAGE} ${DOCKER_REGISTRY}/${DOCKER_IMAGE}"
+                    bat "\"${DOCKER_PATH}\" push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}"
                 }
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'docker-compose up -d'
+                bat 'docker-compose up -d'
             }
         }
     }
