@@ -49,6 +49,7 @@ pipeline {
                     docker.withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
                         docker.image("${DOCKER_IMAGE}").push("${DOCKER_REGISTRY}/${DOCKER_IMAGE}")
                     }
+                }
             }
         }
 
