@@ -32,7 +32,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    bat "\"${DOCKER_PATH}\" build -t ${DOCKER_IMAGE} ."
+                    docker.build("${env.DOCKERFILE_PATH}")
                 }
             }
         }
