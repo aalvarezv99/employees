@@ -5,6 +5,7 @@ pipeline {
         DOCKER_IMAGE = "spring-boot-app"
         DOCKER_REGISTRY = "${env.DOCKER_REGISTRY}"
         DOCKER_CREDENTIALS_ID = "${env.DOCKER_TOKEN}"
+        DOCKERFILE_PATH = "."
     }
 
     tools {
