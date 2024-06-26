@@ -46,10 +46,9 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    bat "\"${DOCKER_PATH}\" login -u ${env.DOCKER_USER} -p ${env.DOCKER_PASSWORD}"
-                    bat "\"${DOCKER_PATH}\" tag ${DOCKER_IMAGE} ${DOCKER_REGISTRY}/${DOCKER_IMAGE}"
-                    bat "\"${DOCKER_PATH}\" push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}"
-                }
+                    docker.withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
+                        docker.image("${DOCKER_IMAGE}").push("${DOCKER_REGISTRY}/${DOCKER_IMAGE}")
+                    }
             }
         }
 
