@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "spring_boot_app"
+        DOCKER_IMAGE = "springbootapp"
         DOCKER_REGISTRY = "${env.DOCKER_REGISTRY}"
         DOCKER_CREDENTIALS_ID = "${env.DOCKER_TOKEN}"
         DOCKERFILE_PATH = "."
