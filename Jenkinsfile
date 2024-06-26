@@ -39,7 +39,12 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                bat 'docker-compose up -d'
+                script {
+                    // Detener y eliminar el contenedor existente
+                    def containerName = "postgres-db"
+                    bat "docker rm -f ${containerName} || true"
+                    bat 'docker-compose up -d'
+                }
             }
         }
     }
