@@ -5,7 +5,10 @@ pipeline {
         DOCKER_IMAGE = "spring-boot-app"
         DOCKER_REGISTRY = "${env.DOCKER_REGISTRY}"
         DOCKER_CREDENTIALS_ID = "${env.DOCKER_TOKEN}"
-        DOCKER_PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker"
+    }
+
+    tools {
+        gradle 'Gradle-7.4'
     }
 
     stages {
@@ -17,7 +20,10 @@ pipeline {
 
         stage('Build') {
             steps {
-                bat 'gradle build --no-daemon'
+                script {
+                    def gradleHome = tool name: 'Gradle-7.4', type: 'gradle'
+                    bat "${gradleHome}/bin/gradle build --no-daemon"
+                }
             }
         }
 
