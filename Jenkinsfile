@@ -9,7 +9,7 @@ pipeline {
 
     tools {
         jdk 'Java-17'
-        gradle 'Gradle-7.4'
+        gradle 'Gradle-7.3.3'
     }
 
     stages {
@@ -22,7 +22,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def gradleHome = tool name: 'Gradle-7.4', type: 'gradle'
+                    def gradleHome = tool name: 'Gradle-7.3.3', type: 'gradle'
                     bat "${gradleHome}/bin/gradle build --no-daemon"
                 }
             }
