@@ -40,9 +40,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Detener y eliminar el contenedor existente
-                    def containerName = "postgres-db"
-                    bat "docker rm -f ${containerName} || true"
+                    def postgresContainer = "postgres-db"
+                    def appContainer = "spring-boot-app"
+                    bat "docker rm -f ${postgresContainer} || true"
+                    bat "docker rm -f ${appContainer} || true"
                     bat 'docker-compose up -d'
                 }
             }
