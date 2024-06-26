@@ -32,25 +32,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
-                        def customImage = docker.build("${env.DOCKER_IMAGE}")
-                    }
-                }
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                bat 'gradle test'
-            }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
-                        docker.image("${DOCKER_IMAGE}").push("${DOCKER_REGISTRY}/${DOCKER_IMAGE}")
-                    }
+                    def customImage = docker.build("${env.DOCKER_IMAGE}", "${env.DOCKERFILE_PATH}")
                 }
             }
         }
